@@ -44,8 +44,7 @@
     background: linear-gradient(135deg, #0f1f3d 0%, #0a0e1a 100%);
     border-bottom: 1px solid var(--border);
     padding: 20px 18px 16px;
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 100;
   }
   .header-top {
@@ -94,9 +93,8 @@
     background: var(--bg);
     padding: 10px 14px;
     border-bottom: 1px solid var(--faint);
-    position: sticky;
-    top: 0;
-    z-index: 99;
+    z-index: 200;
+    position: relative;
   }
   .tab-btn {
     flex: 1;
@@ -463,6 +461,8 @@
     cursor: pointer;
     transition: all 0.2s;
     opacity: 1;
+    position: relative;
+    z-index: 1;
   }
   .ref-toggle:not(.active) {
     opacity: 0.3;
