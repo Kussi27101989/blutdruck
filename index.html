@@ -314,7 +314,7 @@
   /* CHART */
   .chart-wrap {
     position: relative;
-    height: 200px;
+    height: 260px;
     margin-top: 8px;
   }
 
@@ -502,9 +502,16 @@
 
     <div class="stat-grid" id="statGrid"></div>
 
-    <div class="card" id="chartCard" style="padding:16px 8px 8px">
-      <div class="card-title" style="padding-left:8px">VERLAUF</div>
+    <div class="card" id="chartCard" style="padding:16px 8px 12px">
+      <div class="card-title" style="padding-left:8px">VERLAUF (30 TAGE)</div>
       <div class="chart-wrap"><canvas id="bpChart"></canvas></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;padding:10px 8px 0;font-size:10px;color:#475569">
+        <span>━ <span style="color:#3b82f6">Systolisch</span></span>
+        <span>━ <span style="color:#8b5cf6">Diastolisch</span></span>
+        <span style="color:#f97316">╌ Grenze 140/90</span>
+        <span style="color:#22c55e">╌ Optimal 120/80</span>
+        <span style="color:#f97316">● Wert über Grenze</span>
+      </div>
     </div>
 
     <div class="card card-dark">
@@ -776,32 +783,93 @@ function renderDashboard() {
 
     if (chart) chart.destroy();
     const ctx = document.getElementById('bpChart').getContext('2d');
+
+    // Referenzlinien als eigene Datasets (Chart.js ohne annotation-Plugin)
+    const refSys  = data.map(() => 140);  // Sys Grenze Grad 1
+    const refDia  = data.map(() => 90);   // Dia Grenze Grad 1
+    const refSysO = data.map(() => 120);  // Sys Optimal
+    const refDiaO = data.map(() => 80);   // Dia Optimal
+
     chart = new Chart(ctx, {
       type: 'line',
       data: {
         labels,
         datasets: [
+          // Referenzlinien (zuerst, damit sie im Hintergrund sind)
+          {
+            label: 'Sys. Grenze (140)',
+            data: refSys,
+            borderColor: 'rgba(249,115,22,0.6)',
+            borderWidth: 1.5,
+            borderDash: [6, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 10,
+          },
+          {
+            label: 'Dia. Grenze (90)',
+            data: refDia,
+            borderColor: 'rgba(139,92,246,0.45)',
+            borderWidth: 1.5,
+            borderDash: [6, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 11,
+          },
+          {
+            label: 'Sys. Optimal (120)',
+            data: refSysO,
+            borderColor: 'rgba(34,197,94,0.4)',
+            borderWidth: 1,
+            borderDash: [3, 5],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 12,
+          },
+          {
+            label: 'Dia. Optimal (80)',
+            data: refDiaO,
+            borderColor: 'rgba(34,197,94,0.25)',
+            borderWidth: 1,
+            borderDash: [3, 5],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 13,
+          },
+          // Messwerte
           {
             label: 'Systolisch',
             data: data.map(e => e.systolic),
             borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59,130,246,0.08)',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#3b82f6',
+            backgroundColor: 'rgba(59,130,246,0.10)',
+            borderWidth: 2.5,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: data.map(e => e.systolic >= 140 ? '#f97316' : '#3b82f6'),
+            pointBorderColor: '#0a0e1a',
+            pointBorderWidth: 1.5,
             tension: 0.3,
             fill: true,
+            order: 1,
           },
           {
             label: 'Diastolisch',
             data: data.map(e => e.diastolic),
             borderColor: '#8b5cf6',
-            backgroundColor: 'rgba(139,92,246,0.05)',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#8b5cf6',
+            backgroundColor: 'rgba(139,92,246,0.06)',
+            borderWidth: 2.5,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: data.map(e => e.diastolic >= 90 ? '#f97316' : '#8b5cf6'),
+            pointBorderColor: '#0a0e1a',
+            pointBorderWidth: 1.5,
             tension: 0.3,
             fill: true,
+            order: 2,
           },
           ...(data.some(e => e.pulse) ? [{
             label: 'Puls',
@@ -813,6 +881,7 @@ function renderDashboard() {
             pointRadius: 3,
             pointBackgroundColor: '#f472b6',
             tension: 0.3,
+            order: 3,
           }] : []),
         ]
       },
@@ -822,7 +891,16 @@ function renderDashboard() {
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: {
-            labels: { color: '#64748b', font: { size: 11, family: 'DM Sans' }, boxWidth: 12, padding: 12 }
+            display: true,
+            labels: {
+              color: '#64748b',
+              font: { size: 10, family: 'DM Sans' },
+              boxWidth: 16,
+              padding: 8,
+              filter: (item) => !item.text.includes('Optimal') && !item.text.includes('Grenze')
+                ? true
+                : item.text.includes('Grenze'), // zeige Grenz-, aber nicht Optimal-Linien in Legende
+            }
           },
           tooltip: {
             backgroundColor: '#1a1a2e',
@@ -831,20 +909,27 @@ function renderDashboard() {
             titleColor: '#94a3b8',
             bodyColor: '#e2e8f0',
             padding: 10,
+            filter: (item) => item.dataset.order <= 3, // nur Messwerte im Tooltip
             callbacks: {
               label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} ${ctx.dataset.label === 'Puls' ? 'bpm' : 'mmHg'}`
             }
           },
-          annotation: {
-            annotations: {
-              sys140: { type: 'line', yMin: 140, yMax: 140, borderColor: 'rgba(249,115,22,0.3)', borderWidth: 1, borderDash: [4,4] },
-              dia90:  { type: 'line', yMin: 90,  yMax: 90,  borderColor: 'rgba(249,115,22,0.15)', borderWidth: 1, borderDash: [4,4] },
-            }
-          }
         },
         scales: {
-          x: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: '#1e293b' } },
-          y: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: '#1e293b' } }
+          x: {
+            ticks: { color: '#475569', font: { size: 10 }, maxRotation: 45 },
+            grid: { color: '#1e293b' }
+          },
+          y: {
+            ticks: {
+              color: '#475569',
+              font: { size: 10 },
+              callback: v => v + ' mmHg'
+            },
+            grid: { color: '#1e293b' },
+            min: Math.max(50, Math.min(...data.map(e => e.diastolic)) - 15),
+            max: Math.max(...data.map(e => e.systolic)) + 15,
+          }
         }
       }
     });
