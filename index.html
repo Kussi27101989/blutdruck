@@ -524,46 +524,37 @@
       <div style="display:flex;justify-content:space-between;align-items:center;padding:0 8px;margin-bottom:10px">
         <div class="card-title" style="margin-bottom:0">VERLAUF (30 TAGE)</div>
       </div>
+      <div class="chart-wrap"><canvas id="bpChart"></canvas></div>
 
-      <!-- Anzeige-Toggles -->
-      <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 8px;margin-bottom:12px">
-        <button class="ref-toggle active" id="tog-sys" onclick="toggleLine('sys',this)" style="border-color:#3b82f6;color:#3b82f6">● Systolisch</button>
-        <button class="ref-toggle active" id="tog-dia" onclick="toggleLine('dia',this)" style="border-color:#8b5cf6;color:#8b5cf6">● Diastolisch</button>
-        <button class="ref-toggle active" id="tog-puls" onclick="toggleLine('puls',this)" style="border-color:#f472b6;color:#f472b6">● Puls</button>
-      </div>
+      <!-- Referenzlinien Toggles UNTER dem Chart -->
+      <div style="padding:12px 8px 0">
+        <div style="font-size:10px;font-weight:700;color:#475569;margin-bottom:8px">MESSWERTE</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+          <button class="ref-toggle active" id="tog-sys" onclick="toggleLine('sys',this)" style="border-color:#3b82f6;color:#3b82f6">● Systolisch</button>
+          <button class="ref-toggle active" id="tog-dia" onclick="toggleLine('dia',this)" style="border-color:#8b5cf6;color:#8b5cf6">● Diastolisch</button>
+          <button class="ref-toggle active" id="tog-puls" onclick="toggleLine('puls',this)" style="border-color:#f472b6;color:#f472b6">● Puls</button>
+        </div>
 
-      <!-- Referenzlinien Sys -->
-      <div style="padding:0 8px;margin-bottom:8px">
-        <div style="font-size:10px;font-weight:700;color:#3b82f688;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Referenz Systolisch</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <div style="font-size:10px;font-weight:700;color:#3b82f655;margin-bottom:5px">REFERENZ SYSTOLISCH</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
           <button class="ref-toggle active" id="ref-sys-opt" onclick="toggleRef('sys-opt',this)" style="border-color:#22c55e;color:#22c55e">╌ 120 Optimal</button>
           <button class="ref-toggle active" id="ref-sys-nor" onclick="toggleRef('sys-nor',this)" style="border-color:#eab308;color:#eab308">╌ 130 Normal</button>
           <button class="ref-toggle active" id="ref-sys-grz" onclick="toggleRef('sys-grz',this)" style="border-color:#f97316;color:#f97316">╌ 140 Grenze</button>
         </div>
-      </div>
 
-      <!-- Referenzlinien Dia -->
-      <div style="padding:0 8px;margin-bottom:8px">
-        <div style="font-size:10px;font-weight:700;color:#8b5cf688;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Referenz Diastolisch</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <div style="font-size:10px;font-weight:700;color:#8b5cf655;margin-bottom:5px">REFERENZ DIASTOLISCH</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
           <button class="ref-toggle active" id="ref-dia-opt" onclick="toggleRef('dia-opt',this)" style="border-color:#22c55e;color:#22c55e">╌ 80 Optimal</button>
           <button class="ref-toggle active" id="ref-dia-nor" onclick="toggleRef('dia-nor',this)" style="border-color:#eab308;color:#eab308">╌ 85 Normal</button>
           <button class="ref-toggle active" id="ref-dia-grz" onclick="toggleRef('dia-grz',this)" style="border-color:#f97316;color:#f97316">╌ 90 Grenze</button>
         </div>
-      </div>
 
-      <!-- Referenzlinien Puls -->
-      <div style="padding:0 8px;margin-bottom:10px">
-        <div style="font-size:10px;font-weight:700;color:#f472b688;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Referenz Puls</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <div style="font-size:10px;font-weight:700;color:#f472b655;margin-bottom:5px">REFERENZ PULS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px">
           <button class="ref-toggle active" id="ref-puls-min" onclick="toggleRef('puls-min',this)" style="border-color:#22c55e;color:#22c55e">╌ 60 Minimum</button>
           <button class="ref-toggle active" id="ref-puls-max" onclick="toggleRef('puls-max',this)" style="border-color:#f97316;color:#f97316">╌ 100 Maximum</button>
         </div>
-      </div>
-
-      <div class="chart-wrap"><canvas id="bpChart"></canvas></div>
-      <div style="padding:8px 8px 0;font-size:10px;color:#334155;text-align:center">
-        🔴 Punkte = Wert über Grenzwert
+        <div style="font-size:10px;color:#334155;text-align:center;padding-top:4px">🔴 Roter Punkt = Wert über Grenzwert</div>
       </div>
     </div>
 
