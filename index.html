@@ -2,14 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Blutdruck">
-<meta name="theme-color" content="#0a0e1a">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blutdruck Tracker</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -576,6 +569,21 @@
     </div>
   </div>
   <button class="btn-primary" style="margin-bottom:14px" onclick="openPrintDialog()">🖨️ Arztbericht drucken / als PDF speichern</button>
+
+  <!-- BACKUP / RESTORE -->
+  <div class="card" style="border:1px solid #1e40af33;background:#0d1a2e">
+    <div class="card-title" style="color:#3b82f6">💾 DATENSICHERUNG</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.7">
+      Sichere deine Daten regelmäßig als Backup-Datei — z.B. in Google Drive oder WhatsApp an dich selbst senden. So gehen keine Daten verloren wenn Chrome geleert wird.
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-primary" style="margin-top:0;background:linear-gradient(135deg,#1e3a5f,#1e40af)" onclick="exportBackup()">⬆️ Backup speichern</button>
+      <button class="btn-primary" style="margin-top:0;background:linear-gradient(135deg,#14532d,#16a34a)" onclick="document.getElementById('importFile').click()">⬇️ Backup laden</button>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)">
+    <div id="backupInfo" style="font-size:11px;color:#475569;margin-top:10px;text-align:center"></div>
+  </div>
+
   <div id="entryList"></div>
 </div>
 
@@ -929,6 +937,72 @@ function renderVerlauf() {
         <button class="btn-small" onclick="deleteEntry(${e.id})">✕</button>
       </div>`;
   }).join('');
+}
+
+// ============================================================
+// BACKUP / RESTORE
+// ============================================================
+function exportBackup() {
+  if (!entries.length) { showToast('Keine Daten zum Sichern', 'info'); return; }
+  const backup = {
+    version: 1,
+    exportDate: new Date().toISOString(),
+    entries: entries,
+    reminders: reminders
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `blutdruck-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup gespeichert ✓');
+  updateBackupInfo();
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup.entries || !Array.isArray(backup.entries)) {
+        showToast('Ungültige Backup-Datei', 'error');
+        return;
+      }
+      const existing = entries.length;
+      // Merge: neue Einträge hinzufügen, Duplikate vermeiden
+      const existingIds = new Set(entries.map(e => e.id));
+      const newEntries = backup.entries.filter(e => !existingIds.has(e.id));
+      entries = [...entries, ...newEntries].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+      if (backup.reminders) reminders = backup.reminders;
+      save();
+      saveRem();
+      updateHeader();
+      renderDashboard();
+      renderVerlauf();
+      showToast(`${newEntries.length} Messungen wiederhergestellt ✓`);
+      updateBackupInfo();
+    } catch {
+      showToast('Fehler beim Laden der Datei', 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function updateBackupInfo() {
+  const el = document.getElementById('backupInfo');
+  if (!el) return;
+  if (entries.length) {
+    const last = new Date(entries[entries.length-1].timestamp);
+    const first = new Date(entries[0].timestamp);
+    el.textContent = `${entries.length} Messungen gespeichert · Zeitraum: ${last.toLocaleDateString('de-DE')} – ${first.toLocaleDateString('de-DE')}`;
+  } else {
+    el.textContent = 'Noch keine Messungen vorhanden';
+  }
 }
 
 // ============================================================
@@ -1323,12 +1397,9 @@ function showToast(msg, type = 'success') {
 buildDayGrid();
 updateHeader();
 renderDashboard();
+renderVerlauf();
 scheduleNotifications();
-
-// PWA Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+updateBackupInfo();
 </script>
 </body>
 </html>
