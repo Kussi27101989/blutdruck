@@ -180,7 +180,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
           <button class="ref-toggle active" id="ref-puls-min" onclick="toggleRef('puls-min',this)" style="border-color:#22c55e;color:#22c55e">-- 60 Minimum</button>
           <button class="ref-toggle active" id="ref-puls-max" onclick="toggleRef('puls-max',this)" style="border-color:#f97316;color:#f97316">-- 100 Maximum</button>
         </div>
-        <div style="font-size:10px;color:#334155;text-align:center;padding-top:4px">&#128308; Roter Punkt = Wert ueber Grenzwert</div>
+        <div style="font-size:10px;color:#334155;text-align:center;padding-top:4px">&#128308; Roter Punkt = Wert über Grenzwert</div>
       </div>
     </div>
     <div class="card card-dark">
@@ -227,8 +227,8 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
   <div class="card card-dark">
     <div class="card-title">MESSTIPPS</div>
     <div class="tip-row"><span class="tip-arrow">›</span>5 Minuten vor der Messung ruhig sitzen</div>
-    <div class="tip-row"><span class="tip-arrow">›</span>Arm auf Herzhoehe, keine enge Kleidung</div>
-    <div class="tip-row"><span class="tip-arrow">›</span>Morgens nuechtern und abends ideal</div>
+    <div class="tip-row"><span class="tip-arrow">›</span>Arm auf Herzhöhe, keine enge Kleidung</div>
+    <div class="tip-row"><span class="tip-arrow">›</span>Morgens nüchtern und abends ideal</div>
     <div class="tip-row"><span class="tip-arrow">›</span>Im ersten Monat beide Arme vergleichen</div>
     <div class="tip-row"><span class="tip-arrow">›</span>Nicht direkt nach Kaffee, Sport oder Stress</div>
   </div>
@@ -243,7 +243,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
   <button class="btn-primary" style="margin-bottom:14px" onclick="openPrintDialog()">Arztbericht drucken / PDF</button>
   <div class="card" style="border:1px solid #1e40af33;background:#0d1a2e">
     <div class="card-title" style="color:#3b82f6">DATENSICHERUNG</div>
-    <div style="font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.7">Sichere deine Daten regelmaessig als Backup-Datei in Google Drive oder sende sie per WhatsApp an dich selbst.</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.7">Sichere deine Daten regelmäßig als Backup-Datei in Google Drive oder sende sie per WhatsApp an dich selbst.</div>
     <div style="display:flex;gap:8px">
       <button class="btn-primary" style="margin-top:0;background:linear-gradient(135deg,#1e3a5f,#1e40af)" onclick="exportBackup()">Backup speichern</button>
       <button class="btn-primary" style="margin-top:0;background:linear-gradient(135deg,#14532d,#16a34a)" onclick="document.getElementById('importFile').click()">Backup laden</button>
@@ -276,7 +276,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
   </div>
   <div id="reminderList"></div>
   <div class="notif-info">
-    <strong>Browser-Benachrichtigungen:</strong> Aktiviere Benachrichtigungen um Erinnerungen zu erhalten. Die Seite muss dabei geoeffnet sein.
+    <strong>Browser-Benachrichtigungen:</strong> Aktiviere Benachrichtigungen um Erinnerungen zu erhalten. Die Seite muss dabei geöffnet sein.
     <br><br>
     <button class="btn-primary" style="margin-top:0" onclick="requestNotifPermission()">Benachrichtigungen aktivieren</button>
   </div>
@@ -286,7 +286,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
 <div id="printModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;align-items:center;justify-content:center;padding:20px">
   <div style="background:#1e293b;border-radius:16px;padding:24px;width:100%;max-width:420px;border:1px solid #334155">
     <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:6px">Arztbericht erstellen</div>
-    <div style="font-size:12px;color:#64748b;margin-bottom:20px">Angaben fuer den Bericht (optional)</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:20px">Angaben für den Bericht (optional)</div>
     <div style="margin-bottom:12px">
       <label class="lbl">Ihr Name</label>
       <input type="text" id="pName" placeholder="Max Mustermann">
@@ -307,7 +307,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:0}
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="closePrintModal()" style="flex:1;background:#334155;color:#94a3b8;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Abbrechen</button>
-      <button onclick="generatePrint()" style="flex:2;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Bericht oeffnen</button>
+      <button onclick="generatePrint()" style="flex:2;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Bericht öffnen</button>
     </div>
   </div>
 </div>
@@ -477,7 +477,7 @@ function addEntry(){
   var dia=parseInt(document.getElementById('inDia').value);
   var pulse=parseInt(document.getElementById('inPulse').value)||null;
   var note=document.getElementById('inNote').value.trim();
-  if(!sys||!dia||sys<60||sys>250||dia<40||dia>150){showToast('Bitte gueltige Werte eingeben','error');return;}
+  if(!sys||!dia||sys<60||sys>250||dia<40||dia>150){showToast('Bitte gültige Werte eingeben','error');return;}
   var entry={id:Date.now(),timestamp:new Date().toISOString(),systolic:sys,diastolic:dia,pulse:pulse,note:note};
   entries.unshift(entry);
   save();updateHeader();renderVerlauf();
@@ -494,7 +494,7 @@ function deleteEntry(id){
   entries=entries.filter(function(e){return e.id!==id;});
   save();updateHeader();renderVerlauf();
   if(!entries.length) renderDashboard();
-  showToast('Eintrag geloescht','info');
+  showToast('Eintrag gelöscht','info');
 }
 
 function updatePreview(){
@@ -573,7 +573,7 @@ function importBackup(event){
   reader.onload=function(e){
     try{
       var backup=JSON.parse(e.target.result);
-      if(!backup.entries||!Array.isArray(backup.entries)){showToast('Ungueltige Datei','error');return;}
+      if(!backup.entries||!Array.isArray(backup.entries)){showToast('Ungültige Datei','error');return;}
       var existingIds=new Set(entries.map(function(e){return e.id;}));
       var newEntries=backup.entries.filter(function(e){return !existingIds.has(e.id);});
       entries=entries.concat(newEntries).sort(function(a,b){return new Date(b.timestamp)-new Date(a.timestamp);});
@@ -643,18 +643,53 @@ function generatePrint(){
   var allV=sysVals.concat(diaVals);
   var minV=Math.min.apply(null,allV)-10;
   var maxV=Math.max.apply(null,allV)+10;
-  var scX=function(i){return sorted.length>1?(i/(sorted.length-1))*svgW:svgW/2;};
-  var scY=function(v){return svgH-((v-minV)/(maxV-minV))*svgH;};
+  var PAD_L=42,PAD_R=10,PAD_T=10,PAD_B=32;
+  var plotW=svgW-PAD_L-PAD_R, plotH=svgH-PAD_T-PAD_B;
+  var scX=function(i){return PAD_L+(sorted.length>1?(i/(sorted.length-1))*plotW:plotW/2);};
+  var scY=function(v){return PAD_T+plotH-((v-minV)/(maxV-minV))*plotH;};
   var poly=function(vals){return vals.map(function(v,i){return scX(i)+','+scY(v);}).join(' ');};
+
+  // Y-Achse Beschriftungen
+  var yTicks='';
+  var tickCount=5;
+  for(var ti=0;ti<=tickCount;ti++){
+    var tv=Math.round(minV+(maxV-minV)*(ti/tickCount));
+    var ty=scY(tv);
+    yTicks+='<line x1="'+(PAD_L-4)+'" y1="'+ty+'" x2="'+PAD_L+'" y2="'+ty+'" stroke="#ccc" stroke-width="1"/>';
+    yTicks+='<text x="'+(PAD_L-6)+'" y="'+(ty+4)+'" text-anchor="end" font-size="9" fill="#888">'+tv+'</text>';
+    yTicks+='<line x1="'+PAD_L+'" y1="'+ty+'" x2="'+(PAD_L+plotW)+'" y2="'+ty+'" stroke="#f0f0f0" stroke-width="1"/>';
+  }
+
+  // X-Achse Beschriftungen (max 8 Labels)
+  var xTicks='';
+  var step=Math.ceil(sorted.length/8);
+  for(var xi=0;xi<sorted.length;xi+=step){
+    var xd=new Date(sorted[xi].timestamp);
+    var xl=xd.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+    var xx=scX(xi);
+    xTicks+='<line x1="'+xx+'" y1="'+(PAD_T+plotH)+'" x2="'+xx+'" y2="'+(PAD_T+plotH+4)+'" stroke="#ccc" stroke-width="1"/>';
+    xTicks+='<text x="'+xx+'" y="'+(PAD_T+plotH+14)+'" text-anchor="middle" font-size="9" fill="#888">'+xl+'</text>';
+  }
+
+  // Referenzlinie 140
+  var refY140=scY(140);
+  var ref140='<line x1="'+PAD_L+'" y1="'+refY140+'" x2="'+(PAD_L+plotW)+'" y2="'+refY140+'" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>';
+  ref140+='<text x="'+(PAD_L+plotW+2)+'" y="'+(refY140+3)+'" font-size="8" fill="#f97316">140</text>';
+
+  // Achsentitel
+  var axisLabels='<text x="'+(PAD_L-28)+'" y="'+(PAD_T+plotH/2)+'" text-anchor="middle" font-size="9" fill="#666" transform="rotate(-90,'+(PAD_L-28)+','+(PAD_T+plotH/2)+')">mmHg</text>';
+  axisLabels+='<text x="'+(PAD_L+plotW/2)+'" y="'+(PAD_T+plotH+28)+'" text-anchor="middle" font-size="9" fill="#666">Datum</text>';
+
   var svgChart=sorted.length>=2?
-    '<svg width="'+svgW+'" height="'+svgH+'" style="display:block;margin:0 auto">'+
+    '<svg width="'+(svgW+20)+'" height="'+(svgH+10)+'" style="display:block;margin:0 auto">'+
+    '<rect x="'+PAD_L+'" y="'+PAD_T+'" width="'+plotW+'" height="'+plotH+'" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>'+
+    yTicks+xTicks+ref140+axisLabels+
     '<polyline points="'+poly(sysVals)+'" fill="none" stroke="#1a56db" stroke-width="2" stroke-linejoin="round"/>'+
     '<polyline points="'+poly(diaVals)+'" fill="none" stroke="#7e3af2" stroke-width="2" stroke-linejoin="round"/>'+
     sysVals.map(function(v,i){return '<circle cx="'+scX(i)+'" cy="'+scY(v)+'" r="3" fill="#1a56db"/>';}).join('')+
     diaVals.map(function(v,i){return '<circle cx="'+scX(i)+'" cy="'+scY(v)+'" r="3" fill="#7e3af2"/>';}).join('')+
-    '<line x1="0" y1="'+scY(140)+'" x2="'+svgW+'" y2="'+scY(140)+'" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>'+
     '</svg>':
-    '<p style="color:#999;font-size:12px;text-align:center">Mindestens 2 Messungen fuer Grafik erforderlich</p>';
+    '<p style="color:#999;font-size:12px;text-align:center">Mindestens 2 Messungen für Grafik erforderlich</p>';
 
   var w=window.open('','_blank');
   if(!w){showToast('Bitte Popups erlauben','error');return;}
@@ -682,7 +717,7 @@ function generatePrint(){
   w.document.write('@media print{.no-print{display:none!important}}');
   w.document.write('</style></head><body>');
   w.document.write('<button class="btn-print no-print" onclick="window.print()">Drucken / Als PDF speichern</button>');
-  w.document.write('<div class="page-header"><div><div class="doc-title">Blutdruck-Protokoll</div><div class="doc-sub">Selbstmessung - Dokumentation fuer den Arzt</div></div><div class="print-date">Erstellt: '+printDate+'</div></div>');
+  w.document.write('<div class="page-header"><div><div class="doc-title">Blutdruck-Protokoll</div><div class="doc-sub">Selbstmessung - Dokumentation für den Arzt</div></div><div class="print-date">Erstellt: '+printDate+'</div></div>');
   w.document.write('<div class="info-grid">');
   w.document.write('<div class="info-box"><div class="info-box-label">Patient</div><div class="info-box-val">'+name+'</div></div>');
   w.document.write('<div class="info-box"><div class="info-box-label">Geburtsdatum</div><div class="info-box-val">'+dob+'</div></div>');
@@ -702,7 +737,7 @@ function generatePrint(){
   w.document.write('<div class="footer"><span>Selbstmessungsprotokoll - Blutdruck Tracker</span><span>'+dateFrom+' bis '+dateTo+' | '+data.length+' Messungen</span></div>');
   w.document.write('</body></html>');
   w.document.close();
-  showToast('Druckvorschau geoeffnet');
+  showToast('Druckvorschau geöffnet');
 }
 
 function buildDayGrid(){
@@ -725,7 +760,7 @@ function toggleDay(day,btn){
 function addReminder(){
   var time=document.getElementById('remTime').value;
   var label=document.getElementById('remLabel').value.trim()||'Messung';
-  if(!selectedDays.length){showToast('Mindestens einen Tag auswaehlen','error');return;}
+  if(!selectedDays.length){showToast('Mindestens einen Tag auswählen','error');return;}
   var rem={id:Date.now(),time:time,label:label,days:selectedDays.slice(),active:true};
   reminders.push(rem);
   saveRem();renderReminders();scheduleNotifications();
@@ -740,7 +775,7 @@ function toggleReminder(id){
 function deleteReminder(id){
   reminders=reminders.filter(function(r){return r.id!==id;});
   saveRem();renderReminders();
-  showToast('Erinnerung geloescht','info');
+  showToast('Erinnerung gelöscht','info');
 }
 
 function renderReminders(){
